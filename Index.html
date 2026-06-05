@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alpha Athletic | Premium Fitness & Gym</title>
+    
+    <!-- Google Fonts: Montserrat untuk Heading yang maskulin, Inter untuk Body yang mudah dibaca -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Montserrat:wght@500;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <!-- Tailwind Configuration -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        alpha: {
+                            cyan: '#00E5FF',
+                            cyanHover: '#00B8CC',
+                            dark: '#0A0A0A',
+                            card: '#141414',
+                            gray: '#888888',
+                            light: '#F5F5F5'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        heading: ['Montserrat', 'sans-serif'],
+                    },
+                    boxShadow: {
+                        'neon': '0 0 15px rgba(0, 229, 255, 0.3)',
+                        'neon-hover': '0 0 25px rgba(0, 229, 255, 0.6)',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Custom CSS for specific overrides and animations -->
+    <style>
+        body {
+            background-color: #0A0A0A;
+            color: #F5F5F5;
+        }
+        
+        /* Custom Scrollbar for dark theme */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0A0A0A; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #333; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #00E5FF; 
+        }
+
+        /* Glassmorphism for Navbar */
+        .glass-nav {
+            background: rgba(10, 10, 10, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        /* Image Gradients */
+        .img-gradient::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, #0A0A0A 0%, transparent 100%);
+        }
+        .card-img-gradient::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(10,10,10,0.9) 0%, rgba(10,10,10,0.2) 100%);
+            transition: all 0.3s ease;
+        }
+        .group:hover .card-img-gradient::after {
+            background: linear-gradient(to top, rgba(10,10,10,0.9) 0%, rgba(0, 229, 255, 0.2) 100%);
+        }
+        
+        /* Fade In Animation classes */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body class="font-sans antialiased overflow-x-hidden selection:bg-alpha-cyan selection:text-black">
+
+    <!-- Navbar -->
+    <nav id="navbar" class="fixed w-full z-50 glass-nav transition-all duration-300 py-4">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center">
+                <!-- Logo -->
+                <div class="flex-shrink-0 flex items-center">
+                    <a href="#" class="font-heading font-black text-2xl tracking-tighter text-white">
+                        ALPHA<span class="text-alpha-cyan">ATHLETIC</span>
+                    </a>
+                </div>
+                
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex space-x-8 items-center">
+                    <a href="#about" class="text-sm font-medium text-alpha-gray hover:text-white transition-colors">Tentang Kami</a>
+                    <a href="#facilities" class="text-sm font-medium text-alpha-gray hover:text-white transition-colors">Fasilitas</a>
+                    <a href="#classes" class="text-sm font-medium text-alpha-gray hover:text-white transition-colors">Kelas</a>
+                    <a href="#trainers" class="text-sm font-medium text-alpha-gray hover:text-white transition-colors">Pelatih</a>
+                    <a href="#pricing" class="text-sm font-medium text-alpha-gray hover:text-white transition-colors">Harga</a>
+                    <a href="https://wa.me/6289529605601?text=Halo%20Admin%20Alpha%20Athletic,%20saya%20ingin%20mendaftar%20membership." target="_blank" class="px-5 py-2 text-sm font-bold bg-alpha-cyan text-black rounded uppercase tracking-wide hover:bg-alpha-cyanHover shadow-neon transition-all hover:shadow-neon-hover">Daftar</a>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-btn" class="text-white hover:text-alpha-cyan focus:outline-none">
+                        <i class="ph ph-list text-3xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu (Hidden by default) -->
+        <div id="mobile-menu" class="hidden md:hidden bg-alpha-card border-t border-gray-800 absolute w-full left-0 top-full shadow-xl">
+            <div class="px-4 pt-2 pb-6 space-y-1 flex flex-col">
+                <a href="#about" class="block px-3 py-3 text-base font-medium text-alpha-light hover:text-alpha-cyan border-b border-gray-800">Tentang Kami</a>
+                <a href="#facilities" class="block px-3 py-3 text-base font-medium text-alpha-light hover:text-alpha-cyan border-b border-gray-800">Fasilitas</a>
+                <a href="#classes" class="block px-3 py-3 text-base font-medium text-alpha-light hover:text-alpha-cyan border-b border-gray-800">Kelas</a>
+                <a href="#trainers" class="block px-3 py-3 text-base font-medium text-alpha-light hover:text-alpha-cyan border-b border-gray-800">Pelatih</a>
+                <a href="#pricing" class="block px-3 py-3 text-base font-medium text-alpha-light hover:text-alpha-cyan border-b border-gray-800">Harga</a>
+                <a href="https://wa.me/6289529605601?text=Halo%20Admin%20Alpha%20Athletic,%20saya%20ingin%20mendaftar%20membership." target="_blank" class="mt-4 block text-center px-5 py-3 text-base font-bold bg-alpha-cyan text-black rounded uppercase tracking-wide">Daftar Sekarang</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative h-screen flex items-center justify-center overflow-hidden pt-16">
+        <!-- Background Image with Overlay -->
+        <div class="absolute inset-0 z-0 img-gradient">
+            <img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=2000&auto=format&fit=crop" 
+                 alt="Gym Workout" 
+                 class="w-full h-full object-cover object-center opacity-40">
+        </div>
+        
+        <!-- Content -->
+        <div class="relative z-10 text-center max-w-5xl px-4 mx-auto fade-in">
+            <span class="text-alpha-cyan font-bold tracking-[0.2em] text-sm md:text-base uppercase mb-4 block">Evolusi Kebugaran Dimulai Di Sini</span>
+            <h1 class="font-heading font-black text-5xl md:text-7xl lg:text-8xl text-white mb-6 uppercase leading-[1.1]">
+                Bangkitkan Potensi <br><span class="text-transparent bg-clip-text bg-gradient-to-r from-alpha-cyan to-blue-500">Alpha</span> Dalam Dirimu
+            </h1>
+            <p class="mt-4 max-w-2xl mx-auto text-lg md:text-xl text-alpha-gray mb-10 leading-relaxed">
+                Fasilitas elit, pelatih bersertifikat internasional, dan komunitas proaktif. Alpha Athletic adalah arena untuk melampaui batas dan mencapai performa puncaknya.
+            </p>
+            <div class="flex flex-col sm:flex-row justify-center gap-4 sm:gap-6">
+                <a href="https://wa.me/6289529605601?text=Halo%20Admin%20Alpha%20Athletic,%20saya%20ingin%20mendaftar%20membership." target="_blank" class="px-8 py-4 text-base font-bold bg-alpha-cyan text-black rounded uppercase tracking-wider hover:bg-alpha-cyanHover shadow-neon hover:shadow-neon-hover transition-all text-center">
+                    Daftar Sekarang
+                </a>
+                <a href="#classes" class="px-8 py-4 text-base font-bold bg-transparent border-2 border-white text-white rounded uppercase tracking-wider hover:border-alpha-cyan hover:text-alpha-cyan transition-all text-center">
+                    Jadwal Kelas
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-24 bg-alpha-dark relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col lg:flex-row items-center gap-16">
+                <!-- Image Side -->
+                <div class="w-full lg:w-1/2 relative fade-in">
+                    <div class="relative rounded-lg overflow-hidden border border-gray-800 group">
+                        <img src="https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?q=80&w=1000&auto=format&fit=crop" 
+                             alt="Alpha Athletic Gym Area" class="w-full h-[500px] object-cover group-hover:scale-105 transition-transform duration-700">
+                        <div class="absolute inset-0 border-2 border-alpha-cyan/30 rounded-lg pointer-events-none"></div>
+                    </div>
+                    <!-- Decorative element -->
+                    <div class="absolute -bottom-6 -right-6 w-32 h-32 bg-alpha-cyan/10 blur-2xl rounded-full"></div>
+                </div>
+                
+                <!-- Text Side -->
+                <div class="w-full lg:w-1/2 fade-in">
+                    <h2 class="font-heading font-black text-3xl md:text-4xl text-white mb-2 uppercase">Filosofi Kami</h2>
+                    <h3 class="font-heading font-bold text-2xl text-alpha-cyan mb-6 uppercase">Lebih Dari Sekadar Keringat.</h3>
+                    <p class="text-alpha-gray mb-6 text-lg leading-relaxed">
+                        Kami membangun Alpha Athletic dengan satu visi: menciptakan ekosistem kebugaran premium yang memadukan teknologi olahraga mutakhir dengan desain ruang yang membangkitkan energi.
+                    </p>
+                    <p class="text-alpha-gray mb-8 text-lg leading-relaxed">
+                        Bagi kami, kebugaran adalah gaya hidup, bukan sekadar rutinitas. Entah Anda seorang pemula yang baru memulai langkah pertama, atau atlet pro yang mencari batasan baru, kami menyediakan arena tanpa kompromi untuk Anda bertumbuh.
+                    </p>
+                    
+                    <div class="grid grid-cols-2 gap-6 mt-8">
+                        <div>
+                            <p class="font-heading font-black text-4xl text-white mb-1">50+</p>
+                            <p class="text-sm text-alpha-gray uppercase tracking-wider">Kelas per Minggu</p>
+                        </div>
+                        <div>
+                            <p class="font-heading font-black text-4xl text-white mb-1">24/7</p>
+                            <p class="text-sm text-alpha-gray uppercase tracking-wider">Akses Member</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Facilities Section -->
+    <section id="facilities" class="py-24 bg-alpha-card relative border-y border-gray-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 fade-in">
+                <span class="text-alpha-cyan font-bold tracking-[0.2em] text-sm uppercase block mb-2">Standar Internasional</span>
+                <h2 class="font-heading font-black text-4xl md:text-5xl text-white uppercase">Fasilitas Kelas Dunia</h2>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Facility 1 -->
+                <div class="bg-alpha-dark p-8 rounded-xl border border-gray-800 hover:border-alpha-cyan/50 transition-colors group fade-in">
+                    <div class="w-16 h-16 bg-alpha-card rounded-full flex items-center justify-center mb-6 group-hover:bg-alpha-cyan/10 transition-colors">
+                        <i class="ph ph-barbell text-4xl text-alpha-cyan"></i>
+                    </div>
+                    <h3 class="font-heading font-bold text-xl text-white mb-3 uppercase">Peralatan Olimpiade</h3>
+                    <p class="text-alpha-gray leading-relaxed text-sm">
+                        Area beban bebas eksklusif dan deretan mesin isolasi berstandar kompetisi internasional untuk menargetkan setiap grup otot dengan presisi.
+                    </p>
+                </div>
+                
+                <!-- Facility 2 -->
+                <div class="bg-alpha-dark p-8 rounded-xl border border-gray-800 hover:border-alpha-cyan/50 transition-colors group fade-in">
+                    <div class="w-16 h-16 bg-alpha-card rounded-full flex items-center justify-center mb-6 group-hover:bg-alpha-cyan/10 transition-colors">
+                        <i class="ph ph-person-simple-run text-4xl text-alpha-cyan"></i>
+                    </div>
+                    <h3 class="font-heading font-bold text-xl text-white mb-3 uppercase">Zona Crossfit & Fungsional</h3>
+                    <p class="text-alpha-gray leading-relaxed text-sm">
+                        Ruang terbuka luas dilengkapi dengan *turf area*, battle ropes, plyo boxes, dan rig lengkap untuk latihan intensitas tinggi dan kelincahan.
+                    </p>
+                </div>
+                
+                <!-- Facility 3 -->
+                <div class="bg-alpha-dark p-8 rounded-xl border border-gray-800 hover:border-alpha-cyan/50 transition-colors group fade-in">
+                    <div class="w-16 h-16 bg-alpha-card rounded-full flex items-center justify-center mb-6 group-hover:bg-alpha-cyan/10 transition-colors">
+                        <i class="ph ph-drop text-4xl text-alpha-cyan"></i>
+                    </div>
+                    <h3 class="font-heading font-bold text-xl text-white mb-3 uppercase">Premium Recovery Area</h3>
+                    <p class="text-alpha-gray leading-relaxed text-sm">
+                        Percepat pemulihan otot Anda dengan fasilitas *Sauna* premium, ruang *Ice Bath*, dan *lounge* istirahat yang tenang dan nyaman.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Classes Section -->
+    <section id="classes" class="py-24 bg-alpha-dark">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-16 fade-in">
+                <div>
+                    <span class="text-alpha-cyan font-bold tracking-[0.2em] text-sm uppercase block mb-2">Kurikulum Latihan</span>
+                    <h2 class="font-heading font-black text-4xl md:text-5xl text-white uppercase">Program Kelas</h2>
+                </div>
+                <a href="#" class="mt-4 md:mt-0 text-alpha-cyan hover:text-white font-medium flex items-center gap-2 transition-colors">
+                    Lihat Jadwal Lengkap <i class="ph ph-arrow-right"></i>
+                </a>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 h-[800px] lg:h-[400px]">
+                
+                <!-- Class 1: Yoga -->
+                <div class="relative rounded-xl overflow-hidden group cursor-pointer h-full fade-in">
+                    <img src="https://images.unsplash.com/photo-1599901860904-17e6ed7083a0?q=80&w=800&auto=format&fit=crop" alt="Yoga Class" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                    <div class="card-img-gradient"></div>
+                    <div class="absolute bottom-0 left-0 p-6 z-10 w-full transform transition-transform duration-300 translate-y-4 group-hover:translate-y-0">
+                        <div class="bg-alpha-cyan text-black text-xs font-bold px-2 py-1 uppercase inline-block mb-3 rounded-sm">Mobilitas</div>
+                        <h3 class="font-heading font-bold text-2xl text-white mb-1 uppercase">Alpha Flow (Yoga)</h3>
+                        <p class="text-gray-300 text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-100">
+                            Fokus pada keseimbangan, pernapasan, dan pemulihan mobilitas sendi.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Class 2: HIIT -->
+                <div class="relative rounded-xl overflow-hidden group cursor-pointer h-full fade-in">
+                    <img src="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?q=80&w=800&auto=format&fit=crop" alt="HIIT Class" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                    <div class="card-img-gradient"></div>
+                    <div class="absolute bottom-0 left-0 p-6 z-10 w-full transform transition-transform duration-300 translate-y-4 group-hover:translate-y-0">
+                        <div class="bg-red-500 text-white text-xs font-bold px-2 py-1 uppercase inline-block mb-3 rounded-sm">Kardio</div>
+                        <h3 class="font-heading font-bold text-2xl text-white mb-1 uppercase">Burn HIIT</h3>
+                        <p class="text-gray-300 text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-100">
+                            Sesi 45 menit pembakaran kalori intensif dan peningkatan stamina maksimal.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Class 3: Bodybuilding -->
+                <div class="relative rounded-xl overflow-hidden group cursor-pointer h-full fade-in">
+                    <img src="https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?q=80&w=800&auto=format&fit=crop" alt="Bodybuilding Class" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                    <div class="card-img-gradient"></div>
+                    <div class="absolute bottom-0 left-0 p-6 z-10 w-full transform transition-transform duration-300 translate-y-4 group-hover:translate-y-0">
+                        <div class="bg-alpha-cyan text-black text-xs font-bold px-2 py-1 uppercase inline-block mb-3 rounded-sm">Kekuatan</div>
+                        <h3 class="font-heading font-bold text-2xl text-white mb-1 uppercase">Iron Lift</h3>
+                        <p class="text-gray-300 text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-100">
+                            Fokus pada hipertrofi (pembentukan massa otot) dan teknik angkatan dasar.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Class 4: Zumba -->
+                <div class="relative rounded-xl overflow-hidden group cursor-pointer h-full fade-in">
+                    <img src="https://images.unsplash.com/photo-1518611012118-696072aa579a?q=80&w=800&auto=format&fit=crop" alt="Zumba Class" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                    <div class="card-img-gradient"></div>
+                    <div class="absolute bottom-0 left-0 p-6 z-10 w-full transform transition-transform duration-300 translate-y-4 group-hover:translate-y-0">
+                        <div class="bg-purple-500 text-white text-xs font-bold px-2 py-1 uppercase inline-block mb-3 rounded-sm">Endurance</div>
+                        <h3 class="font-heading font-bold text-2xl text-white mb-1 uppercase">Rhythm Force</h3>
+                        <p class="text-gray-300 text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-100">
+                            Kardio ritmik berenergi tinggi yang menyenangkan seperti pesta dansa.
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Trainers Section -->
+    <section id="trainers" class="py-24 bg-alpha-card">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <span class="text-alpha-cyan font-bold tracking-[0.2em] text-sm uppercase block mb-2">Tim Profesional</span>
+            <h2 class="font-heading font-black text-4xl md:text-5xl text-white uppercase mb-16">Dilatih Oleh Para Ahli</h2>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                
+                <!-- Trainer 1 -->
+                <div class="group fade-in">
+                    <div class="relative overflow-hidden rounded-xl mb-4 aspect-[3/4]">
+                        <img src="https://images.unsplash.com/photo-1567598508481-65985588e295?q=80&w=600&auto=format&fit=crop" alt="Trainer Arka" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500">
+                        <!-- Social Overlay -->
+                        <div class="absolute inset-0 bg-alpha-dark/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            <a href="#" class="w-10 h-10 bg-alpha-cyan rounded-full flex items-center justify-center text-black hover:bg-white hover:scale-110 transition-all">
+                                <i class="ph ph-instagram-logo text-xl"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <h3 class="font-heading font-bold text-xl text-white uppercase">Arka</h3>
+                    <p class="text-alpha-cyan text-sm font-medium">Strength & Conditioning</p>
+                </div>
+
+                <!-- Trainer 2 -->
+                <div class="group fade-in">
+                    <div class="relative overflow-hidden rounded-xl mb-4 aspect-[3/4]">
+                        <img src="https://images.unsplash.com/photo-1594381898411-846e7d193883?q=80&w=600&auto=format&fit=crop" alt="Trainer Elena" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500">
+                        <div class="absolute inset-0 bg-alpha-dark/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            <a href="#" class="w-10 h-10 bg-alpha-cyan rounded-full flex items-center justify-center text-black hover:bg-white hover:scale-110 transition-all">
+                                <i class="ph ph-instagram-logo text-xl"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <h3 class="font-heading font-bold text-xl text-white uppercase">Elena</h3>
+                    <p class="text-alpha-cyan text-sm font-medium">Yoga & Mobility Specialist</p>
+                </div>
+
+                <!-- Trainer 3 -->
+                <div class="group fade-in">
+                    <div class="relative overflow-hidden rounded-xl mb-4 aspect-[3/4]">
+                        <img src="https://images.unsplash.com/photo-1606902965551-dce093cda6e7?q=80&w=600&auto=format&fit=crop" alt="Trainer Bima" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500">
+                        <div class="absolute inset-0 bg-alpha-dark/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            <a href="#" class="w-10 h-10 bg-alpha-cyan rounded-full flex items-center justify-center text-black hover:bg-white hover:scale-110 transition-all">
+                                <i class="ph ph-instagram-logo text-xl"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <h3 class="font-heading font-bold text-xl text-white uppercase">Bima</h3>
+                    <p class="text-alpha-cyan text-sm font-medium">Bodybuilding Pro</p>
+                </div>
+
+                <!-- Trainer 4 -->
+                <div class="group fade-in">
+                    <div class="relative overflow-hidden rounded-xl mb-4 aspect-[3/4]">
+                        <img src="https://images.unsplash.com/photo-1611672585731-fa10603fb9e0?q=80&w=600&auto=format&fit=crop" alt="Trainer Clara" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500">
+                        <div class="absolute inset-0 bg-alpha-dark/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            <a href="#" class="w-10 h-10 bg-alpha-cyan rounded-full flex items-center justify-center text-black hover:bg-white hover:scale-110 transition-all">
+                                <i class="ph ph-instagram-logo text-xl"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <h3 class="font-heading font-bold text-xl text-white uppercase">Clara</h3>
+                    <p class="text-alpha-cyan text-sm font-medium">HIIT & Cardio Expert</p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section id="pricing" class="py-24 bg-alpha-dark relative border-y border-gray-900">
+        <!-- Glow background detail -->
+        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full max-w-3xl h-[400px] bg-alpha-cyan/5 blur-[100px] rounded-full pointer-events-none"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="text-center mb-16 fade-in">
+                <span class="text-alpha-cyan font-bold tracking-[0.2em] text-sm uppercase block mb-2">Pilih Jalur Transformasimu</span>
+                <h2 class="font-heading font-black text-4xl md:text-5xl text-white uppercase">Investasi Untuk Dirimu</h2>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-center max-w-5xl mx-auto">
+                
+                <!-- Basic Plan -->
+                <div class="bg-alpha-card border border-gray-800 rounded-2xl p-8 hover:border-gray-600 transition-colors fade-in">
+                    <h3 class="font-heading font-bold text-2xl text-white uppercase mb-2">Basic</h3>
+                    <p class="text-alpha-gray text-sm mb-6">Sempurna untuk memulai rutinitas.</p>
+                    <div class="mb-8">
+                        <span class="text-3xl font-black text-white">Rp 500k</span>
+                        <span class="text-alpha-gray text-sm">/ bulan</span>
+                    </div>
+                    <ul class="space-y-4 mb-8">
+                        <li class="flex items-center text-sm text-gray-300">
+                            <i class="ph ph-check-circle text-alpha-cyan mr-3 text-lg"></i> Akses Gym Area Penuh
+                        </li>
+                        <li class="flex items-center text-sm text-gray-300">
+                            <i class="ph ph-check-circle text-alpha-cyan mr-3 text-lg"></i> Loker Harian
+                        </li>
+                        <li class="flex items-center text-sm text-gray-300">
+                            <i class="ph ph-check-circle text-alpha-cyan mr-3 text-lg"></i> Bebas Biaya Pendaftaran
+                        </li>
+                        <li class="flex items-center text-sm text-gray-600">
+                            <i class="ph ph-x-circle mr-3 text-lg"></i> Akses Kelas Premium
+                        </li>
+                    </ul>
+                    <a href="https://wa.me/6289529605601?text=Halo%20Admin%20Alpha%20Athletic,%20saya%20ingin%20mendaftar%20paket%20Basic." target="_blank" class="block text-center w-full py-3 border border-alpha-cyan text-alpha-cyan rounded font-bold uppercase tracking-wide hover:bg-alpha-cyan/10 transition-colors">
+                        Pilih Basic
+                    </a>
+                </div>
+
+                <!-- Pro Plan (Highlighted) -->
+                <div class="bg-gradient-to-b from-gray-900 to-alpha-card border border-alpha-cyan rounded-2xl p-8 transform md:scale-105 shadow-neon relative fade-in">
+                    <div class="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                        <span class="bg-alpha-cyan text-black text-xs font-bold uppercase tracking-widest py-1 px-4 rounded-full">Paling Populer</span>
+                    </div>
+                    <h3 class="font-heading font-bold text-2xl text-white uppercase mb-2 mt-2">Pro</h3>
+                    <p class="text-alpha-gray text-sm mb-6">Akses lengkap untuk hasil optimal.</p>
+                    <div class="mb-8">
+                        <span class="text-4xl font-black text-white">Rp 850k</span>
+                        <span class="text-alpha-gray text-sm">/ bulan</span>
+                    </div>
+                    <ul class="space-y-4 mb-8">
+                        <li class="flex items-center text-sm text-white">
+                            <i class="ph ph-check-circle text-alpha-cyan mr-3 text-lg"></i> Semua Benefit Basic
+                        </li>
+                        <li class="flex items-center text-sm text-white">
+                            <i class="ph ph-check-circle text-alpha-cyan mr-3 text-lg"></i> Akses Bebas Semua Kelas
+                        </li>
+                        <li class="flex items-center text-sm text-white">
+                            <i class="ph ph-check-circle text-alpha-cyan mr-3 text-lg"></i> 1 Sesi PT Gratis / Bulan
+                        </li>
+                        <li class="flex items-center text-sm text-white">
+                            <i class="ph ph-check-circle text-alpha-cyan mr-3 text-lg"></i> Akses Premium Recovery (Sauna)
+                        </li>
+                    </ul>
+                    <a href="https://wa.me/6289529605601?text=Halo%20Admin%20Alpha%20Athletic,%20saya%20ingin%20mendaftar%20paket%20Pro." target="_blank" class="block text-center w-full py-3 bg-alpha-cyan text-black rounded font-bold uppercase tracking-wide hover:bg-alpha-cyanHover shadow-neon transition-all hover:shadow-neon-hover">
+                        Pilih Pro
+                    </a>
+                </div>
+
+                <!-- Elite Plan -->
+                <div class="bg-alpha-card border border-gray-800 rounded-2xl p-8 hover:border-gray-600 transition-colors fade-in">
+                    <h3 class="font-heading font-bold text-2xl text-white uppercase mb-2">Elite</h3>
+                    <p class="text-alpha-gray text-sm mb-6">Pelayanan VIP tanpa kompromi.</p>
+                    <div class="mb-8">
+                        <span class="text-3xl font-black text-white">Rp 1.5M</span>
+                        <span class="text-alpha-gray text-sm">/ bulan</span>
+                    </div>
+                    <ul class="space-y-4 mb-8">
+                        <li class="flex items-center text-sm text-gray-300">
+                            <i class="ph ph-check-circle text-alpha-cyan mr-3 text-lg"></i> Semua Benefit Pro
+                        </li>
+                        <li class="flex items-center text-sm text-gray-300">
+                            <i class="ph ph-check-circle text-alpha-cyan mr-3 text-lg"></i> 4 Sesi PT / Bulan
+                        </li>
+                        <li class="flex items-center text-sm text-gray-300">
+                            <i class="ph ph-check-circle text-alpha-cyan mr-3 text-lg"></i> Loker Pribadi Permanen
+                        </li>
+                        <li class="flex items-center text-sm text-gray-300">
+                            <i class="ph ph-check-circle text-alpha-cyan mr-3 text-lg"></i> Free Handuk & Minuman Isotonik
+                        </li>
+                    </ul>
+                    <a href="https://wa.me/6289529605601?text=Halo%20Admin%20Alpha%20Athletic,%20saya%20ingin%20mendaftar%20paket%20Elite." target="_blank" class="block text-center w-full py-3 border border-alpha-cyan text-alpha-cyan rounded font-bold uppercase tracking-wide hover:bg-alpha-cyan/10 transition-colors">
+                        Pilih Elite
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="py-24 bg-alpha-card">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 fade-in">
+                <h2 class="font-heading font-black text-3xl md:text-4xl text-white uppercase">Bukti Nyata, Bukan Janji</h2>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Testimonial 1 -->
+                <div class="bg-alpha-dark p-8 rounded-xl border border-gray-800 relative fade-in">
+                    <i class="ph-fill ph-quotes text-4xl text-alpha-cyan/20 absolute top-6 right-6"></i>
+                    <p class="text-gray-300 italic mb-6 relative z-10 text-sm leading-relaxed">
+                        "Suasana di Alpha Athletic benar-benar berbeda. Peralatannya sangat lengkap untuk powerlifting dan pelatihnya sangat mengedukasi."
+                    </p>
+                    <div class="flex items-center">
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=150&auto=format&fit=crop" alt="Member" class="w-12 h-12 rounded-full mr-4 object-cover">
+                        <div>
+                            <h4 class="text-white font-bold text-sm">Kevin R.</h4>
+                            <p class="text-alpha-gray text-xs">Profesional Muda, 28</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Testimonial 2 -->
+                <div class="bg-alpha-dark p-8 rounded-xl border border-gray-800 relative fade-in">
+                    <i class="ph-fill ph-quotes text-4xl text-alpha-cyan/20 absolute top-6 right-6"></i>
+                    <p class="text-gray-300 italic mb-6 relative z-10 text-sm leading-relaxed">
+                        "Sebagai pemula, awalnya saya intimidasi dengan alat gym. Tapi komunitas di sini sangat suportif. Kelas HIIT-nya benar-benar mengubah fisik saya!"
+                    </p>
+                    <div class="flex items-center">
+                        <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=150&auto=format&fit=crop" alt="Member" class="w-12 h-12 rounded-full mr-4 object-cover">
+                        <div>
+                            <h4 class="text-white font-bold text-sm">Diana S.</h4>
+                            <p class="text-alpha-gray text-xs">Entrepreneur, 25</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Testimonial 3 -->
+                <div class="bg-alpha-dark p-8 rounded-xl border border-gray-800 relative fade-in md:hidden lg:block">
+                    <i class="ph-fill ph-quotes text-4xl text-alpha-cyan/20 absolute top-6 right-6"></i>
+                    <p class="text-gray-300 italic mb-6 relative z-10 text-sm leading-relaxed">
+                        "Recovery lounge dengan sauna setelah latihan angkat beban berat adalah penyelamat. Alpha memberikan standar baru untuk fitness center di kota ini."
+                    </p>
+                    <div class="flex items-center">
+                        <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=150&auto=format&fit=crop" alt="Member" class="w-12 h-12 rounded-full mr-4 object-cover">
+                        <div>
+                            <h4 class="text-white font-bold text-sm">Anton T.</h4>
+                            <p class="text-alpha-gray text-xs">Atlet Amatir, 32</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section id="faq" class="py-24 bg-alpha-dark border-t border-gray-900">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 fade-in">
+                <span class="text-alpha-cyan font-bold tracking-[0.2em] text-sm uppercase block mb-2">Pusat Informasi</span>
+                <h2 class="font-heading font-black text-3xl md:text-4xl text-white uppercase">Pertanyaan Umum (FAQ)</h2>
+            </div>
+            <div class="space-y-4 fade-in">
+                <!-- FAQ 1 -->
+                <div class="bg-alpha-card border border-gray-800 rounded-lg p-6">
+                    <h3 class="font-heading font-bold text-lg text-white mb-2">Apakah Alpha Athletic cocok untuk pemula?</h3>
+                    <p class="text-alpha-gray text-sm leading-relaxed">Tentu saja! Kami memiliki komunitas yang sangat suportif dan pelatih profesional yang siap mendampingi Anda dari langkah pertama. Kami juga menyediakan kelas khusus pemula.</p>
+                </div>
+                <!-- FAQ 2 -->
+                <div class="bg-alpha-card border border-gray-800 rounded-lg p-6">
+                    <h3 class="font-heading font-bold text-lg text-white mb-2">Apa saja yang perlu saya bawa saat latihan pertama?</h3>
+                    <p class="text-alpha-gray text-sm leading-relaxed">Cukup bawa pakaian olahraga yang nyaman, sepatu training (indoor), dan botol minum. Handuk kecil disediakan untuk semua member, dan free merchandise khusus untuk member Elite.</p>
+                </div>
+                <!-- FAQ 3 -->
+                <div class="bg-alpha-card border border-gray-800 rounded-lg p-6">
+                    <h3 class="font-heading font-bold text-lg text-white mb-2">Apakah saya bisa membatalkan membership kapan saja?</h3>
+                    <p class="text-alpha-gray text-sm leading-relaxed">Ya, Anda bisa membatalkan atau membekukan (freeze) membership Anda dengan pemberitahuan minimal 14 hari kerja sebelum siklus tagihan Anda berikutnya.</p>
+                </div>
+                <!-- FAQ 4 -->
+                <div class="bg-alpha-card border border-gray-800 rounded-lg p-6">
+                    <h3 class="font-heading font-bold text-lg text-white mb-2">Apakah ada biaya tambahan untuk mengikuti kelas?</h3>
+                    <p class="text-alpha-gray text-sm leading-relaxed">Untuk member Pro dan Elite, seluruh program kelas sudah termasuk dalam paket. Untuk member Basic, kelas dapat diikuti dengan biaya per kedatangan (drop-in).</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-black pt-20 pb-10 border-t border-gray-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
+                
+                <!-- Brand Info -->
+                <div>
+                    <a href="#" class="font-heading font-black text-2xl tracking-tighter text-white mb-4 block">
+                        ALPHA<span class="text-alpha-cyan">ATHLETIC</span>
+                    </a>
+                    <p class="text-alpha-gray text-sm leading-relaxed mb-6">
+                        Arena premium untuk Anda yang menolak batas. Bentuk fisik terbaik, raih performa puncak bersama komunitas Alpha.
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="https://www.instagram.com/solusilokal.id" target="_blank" rel="noopener noreferrer" class="w-10 h-10 bg-gray-900 rounded-full flex items-center justify-center text-gray-400 hover:text-white hover:bg-alpha-cyan transition-colors">
+                            <i class="ph ph-instagram-logo text-xl"></i>
+                        </a>
+                        <a href="https://www.tiktok.com/@solusilokal.id" target="_blank" rel="noopener noreferrer" class="w-10 h-10 bg-gray-900 rounded-full flex items-center justify-center text-gray-400 hover:text-white hover:bg-alpha-cyan transition-colors">
+                            <i class="ph ph-tiktok-logo text-xl"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Quick Links -->
+                <div>
+                    <h4 class="font-heading font-bold text-white uppercase mb-6">Navigasi</h4>
+                    <ul class="space-y-3">
+                        <li><a href="#about" class="text-alpha-gray hover:text-alpha-cyan text-sm transition-colors">Tentang Kami</a></li>
+                        <li><a href="#facilities" class="text-alpha-gray hover:text-alpha-cyan text-sm transition-colors">Fasilitas & Peralatan</a></li>
+                        <li><a href="#classes" class="text-alpha-gray hover:text-alpha-cyan text-sm transition-colors">Program Kelas</a></li>
+                        <li><a href="#trainers" class="text-alpha-gray hover:text-alpha-cyan text-sm transition-colors">Personal Trainer</a></li>
+                        <li><a href="#pricing" class="text-alpha-gray hover:text-alpha-cyan text-sm transition-colors">Daftar Membership</a></li>
+                    </ul>
+                </div>
+
+                <!-- Contact Info -->
+                <div>
+                    <h4 class="font-heading font-bold text-white uppercase mb-6">Kontak Kami</h4>
+                    <ul class="space-y-4">
+                        <li class="flex items-start">
+                            <i class="ph ph-map-pin text-alpha-cyan mt-1 mr-3 text-lg"></i>
+                            <span class="text-alpha-gray text-sm">Jl. Metro Pondok Indah No. 88,<br>Jakarta Selatan, 12310</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="ph ph-whatsapp-logo text-alpha-cyan mr-3 text-lg"></i>
+                            <a href="https://wa.me/6289529605601" target="_blank" rel="noopener noreferrer" class="text-alpha-gray hover:text-alpha-cyan text-sm transition-colors">+62 895-2960-5601</a>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="ph ph-envelope-simple text-alpha-cyan mr-3 text-lg"></i>
+                            <span class="text-alpha-gray text-sm">hello@alphaathletic.id</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Operating Hours -->
+                <div>
+                    <h4 class="font-heading font-bold text-white uppercase mb-6">Jam Operasional</h4>
+                    <ul class="space-y-3">
+                        <li class="flex justify-between border-b border-gray-800 pb-2">
+                            <span class="text-gray-400 text-sm">Senin - Jumat</span>
+                            <span class="text-white font-medium text-sm">05.00 - 23.00</span>
+                        </li>
+                        <li class="flex justify-between border-b border-gray-800 pb-2">
+                            <span class="text-gray-400 text-sm">Sabtu</span>
+                            <span class="text-white font-medium text-sm">06.00 - 21.00</span>
+                        </li>
+                        <li class="flex justify-between pb-2">
+                            <span class="text-gray-400 text-sm">Minggu</span>
+                            <span class="text-white font-medium text-sm">06.00 - 20.00</span>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+            
+            <div class="pt-8 border-t border-gray-900 text-center flex flex-col md:flex-row justify-between items-center">
+                <p class="text-gray-600 text-xs mb-4 md:mb-0">
+                    &copy; 2026 Alpha Athletic. All rights reserved. <span class="hidden md:inline">|</span> Web Development by <a href="https://solusilokal.id" target="_blank" rel="noopener noreferrer" class="text-alpha-cyan hover:text-white transition-colors font-medium">solusilokal.id</a>
+                </p>
+                <div class="space-x-4 text-xs text-gray-600">
+                    <a href="#" class="hover:text-white transition-colors">Privacy Policy</a>
+                    <a href="#" class="hover:text-white transition-colors">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts for Interactions -->
+    <script>
+        // Mobile Menu Toggle
+        const btn = document.getElementById('mobile-menu-btn');
+        const menu = document.getElementById('mobile-menu');
+
+        btn.addEventListener('click', () => {
+            menu.classList.toggle('hidden');
+        });
+
+        // Close mobile menu on link click
+        menu.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                menu.classList.add('hidden');
+            });
+        });
+
+        // Navbar Styling on Scroll
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('shadow-lg');
+                navbar.style.background = 'rgba(10, 10, 10, 0.95)';
+            } else {
+                navbar.classList.remove('shadow-lg');
+                navbar.style.background = 'rgba(10, 10, 10, 0.85)';
+            }
+        });
+
+        // Intersection Observer for Fade-In Animations
+        document.addEventListener("DOMContentLoaded", function() {
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.15
+            };
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        observer.unobserve(entry.target); // Stop observing once visible
+                    }
+                });
+            }, observerOptions);
+
+            const fadeElements = document.querySelectorAll('.fade-in');
+            fadeElements.forEach(el => observer.observe(el));
+        });
+    </script>
+</body>
+</html>
